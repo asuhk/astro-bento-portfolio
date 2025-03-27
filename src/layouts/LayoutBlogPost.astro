@@ -1,6 +1,7 @@
 ---
 import { formatDate } from "../lib/helpers";
 import BasicLayout from "./BasicLayout.astro";
+import { getCollection, getEntry } from "astro:content";
 
 type Props = {
   title: string;
@@ -8,26 +9,73 @@ type Props = {
   pubDate: Date;
   minutesRead: string;
   url: string;
+  images?: string[];
 };
 
 const { title, description, pubDate, minutesRead, url } = Astro.props;
+
+// Fetch the blog post data based on the 'url'
+const post = await getEntry("blog", url.split('/').pop()?.split('.')[0] || "");
+
 ---
 
-<BasicLayout description={description} page="blog" slug={url} title={title}>
-  <main class="mx-auto max-w-3xl w-full h-screen p-8 text-neutral-100">
-    <a
-      class="text-white bg-neutral-900 hover:bg-neutral-800 px-4 py-2 border-1 border-solid border-neutral-600 rounded-lg mb-8"       href="/blog"
-      >Back</a
-    >
-    <div class="my-10">
-      <h1 class="text-5xl font-semibold">{title}</h1>
-      <div class="flex justify-between pt-4 text-gray-500 text-sm">
-        <p>{formatDate(pubDate)}</p>
-        <p>{minutesRead}</p>
+<BasicLayout slug={url} page="blog" title={title} description={description}>
+  <main class="mx-auto max-w-3xl w-full p-8 text-neutral-100 bg-white">
+    <a href="/blog" class="text-black">Back</a>
+    <div class="my-4">
+      <h1 class="text-5xl text-black font-semibold">{title}</h1>
+      <div class="flex justify-between pt-4 text-black-500 text-sm">
+        <p class="text-black">{formatDate(pubDate)}</p>
+        <p class="text-black">{minutesRead}</p>
       </div>
     </div>
-    <article class="prose prose-p:text-red-500 prose-slate prose-invert">
-      <slot />
-    </article>
+
+    <div>
+      <article class="prose prose-slate prose-invert text-black">
+        <slot />
+      </article>
+    </div>
   </main>
 </BasicLayout>
+
+<style>
+  :global(body) {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    margin: 0;
+    }
+
+    main {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    background: #ffffff; /* Set background to white */
+    overflow: auto; /* Ensure content doesn't get cut off */
+    padding-bottom: 1rem; /* Reduce spacing at the bottom */
+    border-radius: 15px; /* Add rounded corners */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Optional: Add a subtle shadow */
+    }
+  /* Customize scrollbar appearance */
+  :global(::-webkit-scrollbar) {
+    width: 20px; /* Reduce scrollbar width */
+  }
+
+  :global(::-webkit-scrollbar-track) {
+    background: #fceae6;
+    border-radius: 6px;
+  }
+
+  :global(::-webkit-scrollbar-thumb) {
+    background: #ffffff;
+    border-radius: 6px;
+    border: 2px solid #fceae6; /* Reduce border thickness */
+  }
+
+  :global(::-webkit-scrollbar-thumb:hover) {
+    background: #ffffff;
+  }
+  article {
+    word-wrap: break-word; /* Ensure long words or URLs don't overflow */
+  }
+</style>

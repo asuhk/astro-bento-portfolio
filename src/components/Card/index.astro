@@ -11,21 +11,23 @@ interface Props {
   colorText?: string;
   height?: string;
   width?: string;
+  hoverColor?: string; // Add the hoverColor prop
 }
 
-const { title, body, colSpan, rowSpan, href, colorText, height } = Astro.props;
+const { title, body, colSpan, rowSpan, href, colorText, height, hoverColor = '#cdb3f8' } = Astro.props; // Set default hoverColor
 ---
 
 <div
-  class={`card flex flex-col h-max sm:h-auto group overflow-hidden transform-y-[-40%] bg-darkslate-500 shadow-lg rounded-lg p-6 border border-darkslate-100 hover:border-primary-500 align-start flex-none ${
+  class={`card flex flex-col h-max sm:h-auto group overflow-hidden transform-y-[-40%] shadow-lg rounded-lg p-6 border border-white border-2 hover:border-primary-500 align-start flex-none ${
     height || "h-full"
   } justify-start relative transform perspective-1200 w-full transition duration-75 ease-in-out col-span-1 ${
     colSpan || "md:col-span-2"
   } ${rowSpan || ""}`}
+  style="background-color: rgba(255, 255, 255, 0.7);"
 >
   {
     href ? (
-      <a class={`h-full w-full ${colorText || ""}`} href={href}>
+      <a href={href} class={`h-full w-full text-black`}>
         <Icon
           class="h-6 float-right group-hover:text-primary-500 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform ease-in-out duration-100 z-20"           name="ri:arrow-right-up-line"
         />
@@ -34,9 +36,15 @@ const { title, body, colSpan, rowSpan, href, colorText, height } = Astro.props;
         </Content>
       </a>
     ) : (
-      <Content body={body} title={title}>
+      <Content title={title} body={body} class="text-black">
         <slot />
       </Content>
     )
   }
 </div>
+
+<style define:vars={{ hoverColor }}>
+  .group:hover {
+    border-color: var(--hoverColor);
+  }
+</style>

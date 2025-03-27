@@ -27,7 +27,11 @@ const { Content, remarkPluginFrontmatter } = await render(entry);
 ---
 
 <LayoutBlogPost
-  description={entry.data.description!}   minutesRead={remarkPluginFrontmatter.minutesRead}   pubDate={entry.data.pubDate!}   title={`${entry.data.title} | Gianmarco Cavallo`}   url={`blog/${entry.id}`}
+  url={`blog/${entry.id}`}
+  minutesRead={remarkPluginFrontmatter.minutesRead}
+  pubDate={entry.data.pubDate!}
+  title={`${entry.data.title} | Anushka Desai`}
+  description={entry.data.description!}
 >
   <Content />
 </LayoutBlogPost>

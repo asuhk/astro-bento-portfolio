@@ -8,23 +8,31 @@ interface Props {
 }
 
 const { title, date, id } = Astro.props;
+
+
+
+
 ---
 
 <li
-  class="list-none w-full text-neutral-100 hover:text-neutral-400 ease-in-out transition-colors border-b-neutral-400 border-dashed border-b-1 my-2"
+  class="list-none w-full text-black0 hover:text-white ease-in-out transition-colors my-2 bg-white rounded shadow-lg py-2 px-2 hover:bg-[#CDB3F8] hover:shadow-[0_0_10px_#CDB3F8]"
 >
   <a
-    class="text-sm md:text-base decoration-none flex justify-between"
+    class="text-sm md:text-base decoration-none flex justify-between items-center"
     href={`/blog/${id}`}
   >
-    <p class="inline-block whitespace-nowrap">
+    <p class="inline-block whitespace-wrap">
       {title}
     </p>
-    <time
-      class="text-right tabular-nums"
-      data-date={date.toISOString()}       datetime={date.toISOString()}
-    >
-      {formatDate(date)}
-    </time>
+    <div class="flex items-center space-x-2">
+      <time
+        class="text-right tabular-nums"
+        datetime={date.toISOString()}
+        data-date={date.toISOString()}
+      >
+        {formatDate(date)}
+      </time>
+     
+    </div>
   </a>
 </li>
